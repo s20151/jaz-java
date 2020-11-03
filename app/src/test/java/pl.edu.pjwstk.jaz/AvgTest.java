@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class AvgTest {
 
     @Test
-    public void test1() {
+    public void averageTest1() {
         var response = given()
                 .param("numbers", "4,3,1,7,5")
                 .when()
@@ -22,7 +22,7 @@ public class AvgTest {
                 .body (equalTo("Average equals: 4"));
     }
     @Test
-    public void test2() {
+    public void averageTest2() {
         var response = given()
                 .param("numbers", "2,1")
                 .when()
@@ -32,7 +32,7 @@ public class AvgTest {
                 .body (equalTo("Average equals: 1.5"));
     }
     @Test
-    public void test3() {
+    public void averageTest3() {
         var response = given()
                 .param("numbers", "2,1,1")
                 .when()
@@ -42,9 +42,8 @@ public class AvgTest {
                 .body (equalTo("Average equals: 1.33"));
     }
     @Test
-    public void test4() {
+    public void averageTest4() {
         var response = given()
-               // .param("numbers", "")
                 .when()
                 .get("/api/average")
                 .then()
