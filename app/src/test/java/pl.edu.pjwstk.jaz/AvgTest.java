@@ -10,10 +10,9 @@ import static org.hamcrest.Matchers.equalTo;
 @RunWith(SpringRunner.class)
 @IntegrationTest
 public class AvgTest {
-
     @Test
-    public void averageTest1() {
-        var response = given()
+    public void shouldPrintFourAsInteger() {
+         given()
                 .param("numbers", "4,3,1,7,5")
                 .when()
                 .get("/api/average")
@@ -22,8 +21,8 @@ public class AvgTest {
                 .body (equalTo("Average equals: 4"));
     }
     @Test
-    public void averageTest2() {
-        var response = given()
+    public void shouldPrintOnePointFive() {
+        given()
                 .param("numbers", "2,1")
                 .when()
                 .get("/api/average")
@@ -32,8 +31,8 @@ public class AvgTest {
                 .body (equalTo("Average equals: 1.5"));
     }
     @Test
-    public void averageTest3() {
-        var response = given()
+    public void shouldRoundToTwoDecimalPlaces() {
+        given()
                 .param("numbers", "2,1,1")
                 .when()
                 .get("/api/average")
@@ -42,8 +41,8 @@ public class AvgTest {
                 .body (equalTo("Average equals: 1.33"));
     }
     @Test
-    public void averageTest4() {
-        var response = given()
+    public void shouldReturnNoParametersInformation() {
+        given()
                 .when()
                 .get("/api/average")
                 .then()
