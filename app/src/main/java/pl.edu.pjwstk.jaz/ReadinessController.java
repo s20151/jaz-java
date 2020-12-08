@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 public class ReadinessController {
     @PersistenceContext
     private EntityManager entityManager;
-        @GetMapping("is-ready")
+        @GetMapping("/auth0/is-ready")
         @Transactional
         public void readinessTest() {
             var entity = new Test1Entity();
