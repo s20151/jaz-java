@@ -12,6 +12,8 @@ public class AppWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         http
                 .csrf().disable()
                 .authorizeRequests ()
+                .antMatchers("/testauthority").hasAuthority("admin")
+                .antMatchers("/userauthority").hasAnyAuthority("user","admin")
                 .antMatchers ("/login").permitAll ()
                 .antMatchers ("/register").permitAll ()
                 .antMatchers ("/auth0/*").permitAll ();
