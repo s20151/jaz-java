@@ -1,9 +1,12 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.oldcontrollers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.pjwstk.jaz.register.RegisterRequest;
+import pl.edu.pjwstk.jaz.user.User;
+import pl.edu.pjwstk.jaz.user.UserRepository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
@@ -19,7 +22,7 @@ public class RegisterController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registerold")
     public void register(@RequestBody RegisterRequest registerRequest, HttpServletResponse response){
         if(userRepository.doesUserExist (registerRequest.getUsername ())){
             response.setStatus (HttpStatus.CONFLICT.value ()); //User already exists.
@@ -32,7 +35,7 @@ public class RegisterController {
                     authorities.add ("admin");
                 }
                 authorities.add ("user");
-                userRepository.addUser (new User (registerRequest.getUsername (),registerRequest.getPassword (),authorities)); //New user created.
+                userRepository.addUser (new User(registerRequest.getUsername (),registerRequest.getPassword (),authorities)); //New user created.
             }
         }
     }

@@ -3,6 +3,8 @@ package pl.edu.pjwstk.jaz;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.edu.pjwstk.jaz.login.LoginRequest;
+
 import static io.restassured.RestAssured.given;
 
 
@@ -14,7 +16,7 @@ public class LoginTest {
     public void should_response_200_admin_enters_admin_authority() {
         var response = given()
                 .when()
-                    .body (new LoginRequest ("admin","admin"))
+                    .body (new LoginRequest("admin","admin"))
                     .post ("/api/login")
                     .thenReturn();
         given ()

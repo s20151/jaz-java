@@ -1,5 +1,6 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.user;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,21 @@ public class UserService {
         return entityManager.createQuery ("SELECT ue FROM UserEntity ue WHERE ue.username= :username", UserEntity.class)
                 .setParameter ("username", username)
                 .getSingleResult ();
+    }
+
+    public UserEntity findCurrentUser(){
+        return entityManager.createQuery ("SELECT ue FROM UserEntity ue WHERE ue.username= :username", UserEntity.class)
+                .setParameter ("username", getCurrentUsername())
+                .getSingleResult ();
+    }
+
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof User) {
+            String username = ((User) principal).getUsername();
+            return username;
+        }else {
+            return principal.toString();
+        }
     }
 }

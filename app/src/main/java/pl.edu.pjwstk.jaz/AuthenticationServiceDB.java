@@ -1,8 +1,11 @@
 package pl.edu.pjwstk.jaz;
-import liquibase.pro.packaged.U;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.edu.pjwstk.jaz.user.User;
+import pl.edu.pjwstk.jaz.user.UserEntity;
+import pl.edu.pjwstk.jaz.user.UserService;
+import pl.edu.pjwstk.jaz.user.UserSession;
 
 import java.util.Arrays;
 import java.util.HashSet;

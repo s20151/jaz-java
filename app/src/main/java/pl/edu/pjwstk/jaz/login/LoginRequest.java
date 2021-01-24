@@ -1,10 +1,10 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.login;
 
-public class RegisterRequest {
+public class LoginRequest {
     private final String username;
     private final String password;
 
-    public RegisterRequest (String username, String password) {
+    public LoginRequest (String username, String password) {
         this.username = username;
         this.password = password;
     }

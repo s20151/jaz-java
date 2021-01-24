@@ -1,4 +1,4 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.user;
 
 import javax.persistence.*;
 
@@ -11,6 +11,8 @@ public class UserEntity {
     private String username;
     private String password;
     private String authorities;
+
+
 
     public String getAuthorities () {
         return authorities;

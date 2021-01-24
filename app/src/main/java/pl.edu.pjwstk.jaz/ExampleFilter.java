@@ -2,6 +2,8 @@ package pl.edu.pjwstk.jaz;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import pl.edu.pjwstk.jaz.user.UserSession;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpFilter;

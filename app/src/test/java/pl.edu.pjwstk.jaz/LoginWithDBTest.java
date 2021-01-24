@@ -3,6 +3,7 @@ package pl.edu.pjwstk.jaz;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
+import pl.edu.pjwstk.jaz.login.LoginRequest;
 
 import static io.restassured.RestAssured.given;
 
@@ -12,7 +13,7 @@ public class LoginWithDBTest {
     public void should_response_200_after_succesful_login() {
         var response = given()
                 .when()
-                .body (new LoginRequest ("admin","admin"))
+                .body (new LoginRequest("admin","admin"))
                 .contentType (ContentType.JSON)
                 .post ("/api/logindb")
                 .then()

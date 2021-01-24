@@ -1,9 +1,11 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.register;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.edu.pjwstk.jaz.user.User;
+import pl.edu.pjwstk.jaz.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -19,7 +21,7 @@ public class RegisterControllerDB {
         this.userService = userService;
     }
 
-    @PostMapping("/registerdb")
+    @PostMapping("/register")
     @Transactional
     public void register(@RequestBody RegisterRequest registerRequest, HttpServletResponse response){
         if(userService.doesUserExist (registerRequest.getUsername ())){
@@ -33,7 +35,7 @@ public class RegisterControllerDB {
                     authorities.add ("admin");
                 }
                 authorities.add ("user");
-                userService.saveUser (new User (registerRequest.getUsername (),registerRequest.getPassword (),authorities)); //New user created.
+                userService.saveUser (new User(registerRequest.getUsername (),registerRequest.getPassword (),authorities)); //New user created.
             }
         }
     }

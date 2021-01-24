@@ -1,0 +1,5 @@
+DROP TABLE users CASCADE;
+DROP TABLE listing CASCADE;
+DROP TABLE photos CASCADE;
+DROP TABLE all_parameters CASCADE;
+DROP TABLE listing_parameters CASCADE;

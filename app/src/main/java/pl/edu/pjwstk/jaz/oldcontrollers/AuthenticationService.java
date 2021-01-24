@@ -1,9 +1,10 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.oldcontrollers;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.Collections;
+import pl.edu.pjwstk.jaz.AppAuthentication;
+import pl.edu.pjwstk.jaz.user.User;
+import pl.edu.pjwstk.jaz.user.UserRepository;
+import pl.edu.pjwstk.jaz.user.UserSession;
 
 
 @Component
@@ -24,7 +25,7 @@ public class AuthenticationService {
             if(storedPassword.equals (password)){
                 userSession.logIn ();
                 User user = userRepository.getUser (username);
-                SecurityContextHolder.getContext ().setAuthentication (new AppAuthentication (user));
+                SecurityContextHolder.getContext ().setAuthentication (new AppAuthentication(user));
                 return true; // Logged in.
             }else{
                 return false; // Invalid password.

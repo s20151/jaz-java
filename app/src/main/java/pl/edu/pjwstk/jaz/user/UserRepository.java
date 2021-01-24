@@ -1,4 +1,4 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.user;
 
 import org.springframework.stereotype.Repository;
 import java.util.HashMap;

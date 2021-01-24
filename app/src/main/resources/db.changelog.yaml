@@ -15,3 +15,115 @@ databaseChangeLog:
         stripComments: true
         splitStatements: false
         path: db.changelog/20201201_add_users.sql
+  - changeSet:
+      id: 20210101_allezon
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210101_allezon.sql
+  - changeSet:
+      id: 20210112_dropall
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_dropall.sql
+  - changeSet:
+      id: 20210112_allezon2
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_allezon2.sql
+  - changeSet:
+      id: 20210112_dropall2
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_dropall2.sql
+  - changeSet:
+      id: 20210112_allezon3
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_allezon3.sql
+  - changeSet:
+      id: 20210112_users
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_users.sql
+  - changeSet:
+      id: 20210112_allezon4
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_allezon4.sql
+  - changeSet:
+      id: 20210112_allezon_final
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210112_allezon_final.sql
+  - changeSet:
+      id: 20210124_dropall3
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_dropall3.sql
+  - changeSet:
+      id: 20210124_allezon_final_2
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_2.sql
+  - changeSet:
+      id: 20210124_dropall4
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_dropall4.sql
+  - changeSet:
+      id: 20210124_allezon_final_3
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_3.sql
+  - changeSet:
+      id: 20210124_allezon_final_4
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_4.sql
+  - changeSet:
+      id: 20210124_allezon_final_5
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_5.sql

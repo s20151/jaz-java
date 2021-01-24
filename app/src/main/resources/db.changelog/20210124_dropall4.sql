@@ -1,0 +1,7 @@
+DROP TABLE users CASCADE;
+DROP TABLE category CASCADE;
+DROP TABLE section CASCADE;
+DROP TABLE auction CASCADE;
+DROP TABLE auction_photo CASCADE;
+DROP TABLE parameter CASCADE;
+DROP TABLE auction_parameter CASCADE;

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.edu.pjwstk.jaz.register.RegisterRequest;
 
 import static io.restassured.RestAssured.given;
 
@@ -15,7 +16,7 @@ public class RegisterTest {
     public void status_code_409_when_user_already_exists(){
         given()
                 .when ()
-                .body (new RegisterRequest ("user","user"))
+                .body (new RegisterRequest("user","user"))
                 .contentType (ContentType.JSON)
                 .post ("/api/register")
                 .thenReturn ();

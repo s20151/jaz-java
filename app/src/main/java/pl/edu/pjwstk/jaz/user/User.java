@@ -1,4 +1,6 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.user;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Set;
 
@@ -36,4 +38,5 @@ public class User {
     public void setAuthorities (Set<String> authorities) {
         this.authorities = authorities;
     }
+
 }
