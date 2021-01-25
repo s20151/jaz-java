@@ -16,7 +16,7 @@ public class AppWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 .antMatchers("/category").hasAuthority("admin")
                 .antMatchers("/section").hasAuthority("admin")
                 .antMatchers("/auctions").hasAnyAuthority("user","admin")
-                .antMatchers("/auctions/.").hasAnyAuthority("user","admin")
+                .antMatchers("/auctions/*").hasAnyAuthority("user","admin")
                 .antMatchers("/userauthority").hasAnyAuthority("user","admin")
                 .antMatchers ("/login").permitAll ()
                 .antMatchers ("/register").permitAll ()

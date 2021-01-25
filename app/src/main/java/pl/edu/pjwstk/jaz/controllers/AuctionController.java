@@ -8,7 +8,6 @@ import pl.edu.pjwstk.jaz.entities.AuctionEntity;
 import pl.edu.pjwstk.jaz.entities.AuctionView;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
 import pl.edu.pjwstk.jaz.services.AuctionService;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -38,12 +37,12 @@ public class AuctionController {
     }
 
     @GetMapping("/auctions/{auctionID}")
-    public AuctionView viewAuction(@PathVariable("auctionID") Long auctionId){
+    public AuctionView viewOneAuction(@PathVariable("auctionID") Long auctionId){
         return auctionService.viewAuction(auctionId);
     }
 
     @GetMapping("/auctions")
-    public List<AuctionView> auctionEntityList(){
+    public List<AuctionView> viewAllAuctions(){
         return auctionService.viewAllAuctions();
     }
 }

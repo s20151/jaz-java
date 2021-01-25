@@ -1,11 +1,10 @@
 package pl.edu.pjwstk.jaz.controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pjwstk.jaz.requests.SectionRequest;
 import pl.edu.pjwstk.jaz.services.SectionService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 @RestController
@@ -19,5 +18,10 @@ public class SectionController {
     @Transactional
     public void createSection(@RequestBody SectionRequest sectionRequest){
         sectionService.createSection(sectionRequest);
+    }
+    @PutMapping("/section/{sectionID}")
+    @Transactional
+    public void createSection(@PathVariable("sectionID") Long id, @RequestBody SectionRequest sectionRequest, HttpServletResponse response){
+        sectionService.editSection(id,sectionRequest, response);
     }
 }
