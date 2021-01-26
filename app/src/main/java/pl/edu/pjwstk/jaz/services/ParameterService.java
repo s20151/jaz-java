@@ -3,7 +3,6 @@ package pl.edu.pjwstk.jaz.services;
 import org.springframework.stereotype.Repository;
 import pl.edu.pjwstk.jaz.entities.ParameterEntity;
 import pl.edu.pjwstk.jaz.requests.ParameterRequest;
-
 import javax.persistence.EntityManager;
 
 @Repository

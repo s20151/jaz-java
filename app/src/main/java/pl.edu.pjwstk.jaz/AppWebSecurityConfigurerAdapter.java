@@ -12,9 +12,11 @@ public class AppWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         http
                 .csrf().disable()
                 .authorizeRequests ()
-                .antMatchers("/testauthority").hasAuthority("admin")
+               .antMatchers("/testauthority").hasAuthority("admin")
                 .antMatchers("/category").hasAuthority("admin")
+                .antMatchers("/category/*").hasAuthority("admin")
                 .antMatchers("/section").hasAuthority("admin")
+                .antMatchers("/section/*").hasAuthority("admin")
                 .antMatchers("/auctions").hasAnyAuthority("user","admin")
                 .antMatchers("/auctions/*").hasAnyAuthority("user","admin")
                 .antMatchers("/userauthority").hasAnyAuthority("user","admin")

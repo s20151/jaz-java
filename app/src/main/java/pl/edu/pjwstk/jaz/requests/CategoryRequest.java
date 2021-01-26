@@ -4,6 +4,11 @@ public class CategoryRequest {
     private String name;
     private Long section_id;
 
+    public CategoryRequest(String name, Long section_id) {
+        this.name = name;
+        this.section_id = section_id;
+    }
+
     public Long getSection_id() {
         return section_id;
     }

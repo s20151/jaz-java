@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import pl.edu.pjwstk.jaz.entities.CategoryEntity;
 import pl.edu.pjwstk.jaz.entities.SectionEntity;
 import pl.edu.pjwstk.jaz.requests.CategoryRequest;
-import pl.edu.pjwstk.jaz.requests.SectionRequest;
 
 
 import javax.persistence.EntityManager;

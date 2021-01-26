@@ -1,17 +1,12 @@
 package pl.edu.pjwstk.jaz.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pjwstk.jaz.entities.AuctionEntity;
 import pl.edu.pjwstk.jaz.entities.AuctionView;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
 import pl.edu.pjwstk.jaz.services.AuctionService;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,12 +32,12 @@ public class AuctionController {
     }
 
     @GetMapping("/auctions/{auctionID}")
-    public AuctionView viewOneAuction(@PathVariable("auctionID") Long auctionId){
-        return auctionService.viewAuction(auctionId);
+    public AuctionView viewOneAuction(@PathVariable("auctionID") Long auctionId, HttpServletResponse response){
+        return auctionService.viewAuction(auctionId, response);
     }
 
     @GetMapping("/auctions")
-    public List<AuctionView> viewAllAuctions(){
-        return auctionService.viewAllAuctions();
+    public List<AuctionView> viewAllAuctions(HttpServletResponse response){
+        return auctionService.viewAllAuctions(response);
     }
 }

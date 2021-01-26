@@ -1,5 +1,4 @@
 package pl.edu.pjwstk.jaz.requests;
-import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -16,6 +15,18 @@ public class AuctionRequest {
 
     private List<ParameterRequest> parameters;
     private List<PhotoRequest> photos;
+
+    public AuctionRequest(@NotNull String title, @NotNull String description, @NotNull int price, @NotNull String categoryName, List<ParameterRequest> parameters, List<PhotoRequest> photos) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.categoryName = categoryName;
+        this.parameters = parameters;
+        this.photos = photos;
+    }
+
+    public AuctionRequest() {
+    }
 
     public List<PhotoRequest> getPhotos() {
         return photos;

@@ -2,7 +2,6 @@ package pl.edu.pjwstk.jaz.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjwstk.jaz.requests.CategoryRequest;
-import pl.edu.pjwstk.jaz.requests.SectionRequest;
 import pl.edu.pjwstk.jaz.services.CategoryService;
 
 import javax.servlet.http.HttpServletResponse;

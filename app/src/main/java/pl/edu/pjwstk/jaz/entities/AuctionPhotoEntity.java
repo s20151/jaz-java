@@ -1,22 +1,10 @@
 package pl.edu.pjwstk.jaz.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-
-import static javax.persistence.CascadeType.MERGE;
 
 @Entity
 @Table(name="auction_photo")
 public class AuctionPhotoEntity {
-
-   /* @EmbeddedId
-    private AuctionPhotoId id = new AuctionPhotoId();
-
-    @ManyToOne
-    @MapsId("auction_id")
-    @JoinColumn(name = "auction_id")
-    private AuctionEntity auctionEntity;
-*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

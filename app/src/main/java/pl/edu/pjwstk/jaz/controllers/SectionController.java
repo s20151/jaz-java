@@ -3,7 +3,6 @@ package pl.edu.pjwstk.jaz.controllers;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjwstk.jaz.requests.SectionRequest;
 import pl.edu.pjwstk.jaz.services.SectionService;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
@@ -16,8 +15,8 @@ public class SectionController {
     }
     @PostMapping("/section")
     @Transactional
-    public void createSection(@RequestBody SectionRequest sectionRequest){
-        sectionService.createSection(sectionRequest);
+    public void createSection(@RequestBody SectionRequest sectionRequest, HttpServletResponse response){
+        sectionService.createSection(sectionRequest, response);
     }
     @PutMapping("/section/{sectionID}")
     @Transactional

@@ -15,7 +15,7 @@ public class LoginWithDBTest {
                 .when()
                 .body (new LoginRequest("admin","admin"))
                 .contentType (ContentType.JSON)
-                .post ("/api/logindb")
+                .post ("/api/login")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
     }

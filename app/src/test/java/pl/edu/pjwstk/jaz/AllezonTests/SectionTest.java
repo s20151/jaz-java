@@ -1,32 +1,34 @@
-package pl.edu.pjwstk.jaz;
+package pl.edu.pjwstk.jaz.AllezonTests;
 
 import io.restassured.http.ContentType;
-import org.junit.Before;
+import io.restassured.response.Response;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.runner.Request;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.context.WebApplicationContext;
 import pl.edu.pjwstk.jaz.login.LoginRequest;
 import pl.edu.pjwstk.jaz.requests.SectionRequest;
-
 import static io.restassured.RestAssured.given;
 
 public class SectionTest {
 
-    @Test
-    public void should_response_200_after_creating_section(){
-        var response = given()
+    private static Response adminResponse;
+
+    @BeforeClass
+    public static void loginAsAdmin(){
+        adminResponse = given()
                 .when()
                 .body (new LoginRequest ("admin","admin"))
                 .contentType (ContentType.JSON)
                 .post ("/api/login")
                 .thenReturn();
-        given()
-                .when()
-                .body(new SectionRequest("newSectionFromTest"))
+    }
+
+    @Test
+    public void should_response_200_after_creating_section(){
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .body(new SectionRequest("newSectionFromTest223"))
+                .contentType (ContentType.JSON)
                 .post("/api/section")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
@@ -35,30 +37,21 @@ public class SectionTest {
     @Test
     public void should_response_200_after_editing_existing_section(){
         var response = given()
-                .when()
-                .body (new LoginRequest ("admin","admin"))
+                .cookies(adminResponse.getCookies())
+                .body(new SectionRequest("sectionAfterEdit333"))
                 .contentType (ContentType.JSON)
-                .post ("/api/login")
-                .thenReturn();
-        given()
-                .when()
-                .body(new SectionRequest("sectionAfterEdit"))
                 .put("/api/section/2")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
     }
+
     @Test
-    public void should_response_404_after_editing_not_existing_section(){
+    public void should_response_404_after_trying_to_edit_not_existing_section(){
         var response = given()
-                .when()
-                .body (new LoginRequest ("admin","admin"))
-                .contentType (ContentType.JSON)
-                .post ("/api/login")
-                .thenReturn();
-        given()
-                .when()
+                .cookies(adminResponse.getCookies())
                 .body(new SectionRequest("sectionAfterEdit"))
-                .put("/api/section/2222")
+                .contentType (ContentType.JSON)
+                .put("/api/section/1234")
                 .then()
                 .statusCode (HttpStatus.NOT_FOUND.value ());
     }

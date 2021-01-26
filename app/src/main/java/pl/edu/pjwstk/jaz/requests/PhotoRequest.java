@@ -3,7 +3,7 @@ package pl.edu.pjwstk.jaz.requests;
 public class PhotoRequest {
     private String link;
 
-    public PhotoRequest(String link, int position) {
+    public PhotoRequest(String link) {
         this.link = link;
     }
 
