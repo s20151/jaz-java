@@ -14,16 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 @Repository
 public class CategoryService {
     private final EntityManager entityManager;
+    private final SectionService sectionService;
 
-    public CategoryService(EntityManager entityManager) {
+    public CategoryService(EntityManager entityManager, SectionService sectionService) {
         this.entityManager = entityManager;
+        this.sectionService = sectionService;
     }
 
     public void createCategory(CategoryRequest categoryRequest, HttpServletResponse response){
         var categoryEntity = new CategoryEntity();
         if(doesSectionExist(categoryRequest.getSection_id())) {
             categoryEntity.setName(categoryRequest.getName());
-            categoryEntity.setSection_id(categoryRequest.getSection_id());
+            categoryEntity.setSectionEntity(sectionService.getSection(categoryRequest.getSection_id()));
             entityManager.persist(categoryEntity);
             response.setStatus(HttpStatus.OK.value());
         }else{

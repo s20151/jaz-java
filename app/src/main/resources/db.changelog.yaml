@@ -135,3 +135,19 @@ databaseChangeLog:
         stripComments: true
         splitStatements: false
         path: db.changelog/20210124_allezon_final_6.sql
+  - changeSet:
+      id: 20210124_allezon_final_final
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_final.sql
+  - changeSet:
+      id: 20210124_allezon_final_final2
+      author: Norbert Lesniak
+      sqlFile:
+        relativeToChangelogFile: true
+        stripComments: true
+        splitStatements: false
+        path: db.changelog/20210124_allezon_final_final2.sql

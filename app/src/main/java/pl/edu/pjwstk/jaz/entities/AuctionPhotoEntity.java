@@ -2,15 +2,29 @@ package pl.edu.pjwstk.jaz.entities;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name="auction_photo")
 public class AuctionPhotoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long auction_id;
+
     private int position;
     private String link;
+
+    @ManyToOne
+    @JoinColumn(name = "auction_id")
+    private AuctionEntity auctionEntity;
+
+    public AuctionEntity getAuctionEntity() {
+        return auctionEntity;
+    }
+
+    public void setAuctionEntity(AuctionEntity auctionEntity) {
+        this.auctionEntity = auctionEntity;
+    }
 
     public Long getId() {
         return id;
@@ -18,14 +32,6 @@ public class AuctionPhotoEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getAuction_id() {
-        return auction_id;
-    }
-
-    public void setAuction_id(Long auction_id) {
-        this.auction_id = auction_id;
     }
 
     public int getPosition() {

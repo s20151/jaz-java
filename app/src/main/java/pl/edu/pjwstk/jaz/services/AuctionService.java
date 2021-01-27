@@ -85,7 +85,7 @@ public class AuctionService {
     }
 
     public AuctionPhotoEntity getAuctionMiniature(AuctionEntity auction){
-        return entityManager.createQuery ("SELECT photo FROM AuctionPhotoEntity photo WHERE photo.auction_id= :id AND photo.position=1", AuctionPhotoEntity.class)
+        return entityManager.createQuery ("SELECT photo FROM AuctionPhotoEntity photo WHERE photo.auctionEntity.id= :id AND photo.position=1", AuctionPhotoEntity.class)
                 .setParameter ("id", auction.getId())
                 .getSingleResult ();
     }
@@ -103,11 +103,11 @@ public class AuctionService {
             auction.setDescription(auctionRequest.getDescription());
             auction.setPrice(auctionRequest.getPrice());
             UserEntity currentUser = findCurrentUser();
-            auction.setCreator_id(currentUser.getId());
+            auction.setUserEntity(currentUser);
             CategoryEntity category;
             if(categoryService.doesCategoryExist(auctionRequest.getCategoryName())) {
                 category = categoryService.findByName(auctionRequest.getCategoryName());
-                auction.setCategory_id(category.getId());
+                auction.setCategoryEntity(category);
                 entityManager.persist(auction);
                 try {
                     setAuctionParameters(auctionRequest.getParameters(), auction);
@@ -132,14 +132,14 @@ public class AuctionService {
         if(auctionFromDb==null){
             response.setStatus(HttpStatus.NOT_FOUND.value());
         }else {
-            if(currentUser.getId()==auctionFromDb.getCreator_id() || currentUser.getAuthorities().contains("admin")) {
+            if(currentUser.getId()==auctionFromDb.getUserEntity().getId() || currentUser.getAuthorities().contains("admin")) {
                 if(auctionRequest.getCategoryName() != null) {
                     CategoryEntity category = null;
                     if(categoryService.doesCategoryExist(auctionRequest.getCategoryName())) {
                         category = categoryService.findByName(auctionRequest.getCategoryName());
                     }
                     if(category!=null) {
-                        auctionFromDb.setCategory_id(category.getId());
+                        auctionFromDb.setCategoryEntity(category);
                     }
                 }
                 if(auctionRequest.getTitle()!= null) {
@@ -265,7 +265,7 @@ public class AuctionService {
         int position = 1;
         for(PhotoRequest photoRequest : photos){
             var photo = new AuctionPhotoEntity();
-            photo.setAuction_id(auction.getId());
+            photo.setAuctionEntity(auction);
             photo.setLink(photoRequest.getLink());
             photo.setPosition(position);
             position++;

@@ -1,6 +1,8 @@
 package pl.edu.pjwstk.jaz.entities;
 
+import pl.edu.pjwstk.jaz.user.UserEntity;
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -9,12 +11,36 @@ public class AuctionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long creator_id;
-    private Long category_id;
     private String title;
     private String description;
     private int price;
     private int version;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private UserEntity userEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity categoryEntity;
+
+
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
+    }
+
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
+    }
 
     public int getVersion() {
         return version;
@@ -31,23 +57,6 @@ public class AuctionEntity {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getCreator_id() {
-        return creator_id;
-    }
-
-    public void setCreator_id(Long creator_id) {
-        this.creator_id = creator_id;
-    }
-
-    public Long getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
-    }
-
     public String getTitle() {
         return title;
     }

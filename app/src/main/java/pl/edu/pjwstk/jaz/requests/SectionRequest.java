@@ -7,6 +7,9 @@ public class SectionRequest {
         this.name = name;
     }
 
+    public SectionRequest() {
+    }
+
     public String getName() {
         return name;
     }

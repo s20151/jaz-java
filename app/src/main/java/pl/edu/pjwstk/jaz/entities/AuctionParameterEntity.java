@@ -6,6 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "auction_parameter")
 public class AuctionParameterEntity implements Serializable {
+
     @EmbeddedId
     private AuctionParameterId id = new AuctionParameterId();
 

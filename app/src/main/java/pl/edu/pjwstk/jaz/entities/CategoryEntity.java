@@ -8,15 +8,19 @@ public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long section_id;
     private String name;
 
-    public Long getSection_id() {
-        return section_id;
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private SectionEntity sectionEntity;
+
+
+    public SectionEntity getSectionEntity() {
+        return sectionEntity;
     }
 
-    public void setSection_id(Long section_id) {
-        this.section_id = section_id;
+    public void setSectionEntity(SectionEntity sectionEntity) {
+        this.sectionEntity = sectionEntity;
     }
 
     public Long getId() {
