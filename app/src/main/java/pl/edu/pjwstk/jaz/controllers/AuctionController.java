@@ -1,5 +1,6 @@
 package pl.edu.pjwstk.jaz.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjwstk.jaz.entities.AuctionView;

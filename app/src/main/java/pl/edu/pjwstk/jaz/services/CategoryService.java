@@ -5,11 +5,9 @@ import org.springframework.stereotype.Repository;
 import pl.edu.pjwstk.jaz.entities.CategoryEntity;
 import pl.edu.pjwstk.jaz.entities.SectionEntity;
 import pl.edu.pjwstk.jaz.requests.CategoryRequest;
-
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Repository
 public class CategoryService {
@@ -23,52 +21,32 @@ public class CategoryService {
 
     public void createCategory(CategoryRequest categoryRequest, HttpServletResponse response){
         var categoryEntity = new CategoryEntity();
-        if(doesSectionExist(categoryRequest.getSection_id())) {
-            categoryEntity.setName(categoryRequest.getName());
-            categoryEntity.setSectionEntity(sectionService.getSection(categoryRequest.getSection_id()));
-            entityManager.persist(categoryEntity);
-            response.setStatus(HttpStatus.OK.value());
+        if(entityManager.find(SectionEntity.class, categoryRequest.getSection_id())!=null) {
+            if(findByName(categoryRequest.getName()).isEmpty()) {
+                categoryEntity.setName(categoryRequest.getName());
+                categoryEntity.setSectionEntity(entityManager.find(SectionEntity.class, categoryRequest.getSection_id()));
+                entityManager.persist(categoryEntity);
+                response.setStatus(HttpStatus.OK.value());
+            }else{
+                response.setStatus(HttpStatus.CONFLICT.value());
+            }
         }else{
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
     }
     public void editCategory(Long id, CategoryRequest categoryRequest, HttpServletResponse response){
-        CategoryEntity categoryFromDB;
-        try {
-            categoryFromDB = getCategory(id);
-            categoryFromDB.setName(categoryRequest.getName());
-            entityManager.merge(categoryFromDB);
-            response.setStatus(HttpStatus.OK.value());
-        }catch(NoResultException e){
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-        }
-    }
-    public CategoryEntity getCategory(Long id){
-        return entityManager.createQuery ("SELECT category FROM CategoryEntity category WHERE category.id= :id", CategoryEntity.class)
-                .setParameter ("id", id)
-                .getSingleResult ();
-    }
-    public boolean doesCategoryExist(String name) {
-        if(entityManager.createQuery("SELECT ce FROM CategoryEntity ce WHERE ce.name= :name", CategoryEntity.class)
-                .setParameter("name", name)
-                .getResultList().isEmpty()) return false;
-        else return true;
-    }
-    public boolean doesSectionExist(Long id) {
-        if(entityManager.createQuery("SELECT section FROM SectionEntity section WHERE section.id= :id", SectionEntity.class)
-                .setParameter("id", id)
-                .getResultList().isEmpty()) return false;
-        else return true;
-    }
-    public CategoryEntity findByName(String name){
-        return entityManager.createQuery ("SELECT ce FROM CategoryEntity ce WHERE ce.name= :name", CategoryEntity.class)
-                .setParameter ("name", name)
-                .getSingleResult ();
+            CategoryEntity categoryFromDB= entityManager.find(CategoryEntity.class, id);
+            if(categoryFromDB!=null) {
+                categoryFromDB.setName(categoryRequest.getName());
+                entityManager.merge(categoryFromDB);
+                response.setStatus(HttpStatus.OK.value());
+            }else response.setStatus(HttpStatus.NOT_FOUND.value());
     }
 
-    public void createNewCategoryFromString(String name) {
-        CategoryEntity categoryEntity = new CategoryEntity();
-        categoryEntity.setName(name);
-        entityManager.persist(categoryEntity);
+    public List<CategoryEntity> findByName(String name){
+        return entityManager.createQuery ("SELECT ce FROM CategoryEntity ce WHERE ce.name= :name", CategoryEntity.class)
+                .setParameter ("name", name)
+                .getResultList();
     }
+
 }
