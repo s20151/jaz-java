@@ -229,15 +229,29 @@ public class AllTestsInOne {
                 .contentType (ContentType.JSON)
                 .get("/api/auctions")
                 .andReturn();
-        String expectedResponseBody = "[{\"id\":1,\"title\":\"Title from test 1\",\"description\":\"Description from test 1\",\"category_name\":\"categoryAfterEdit\",\"price\":100,\"version\":1,\"miniature\":\"link1\",\"parameters\":{\"TestParameter3\":\"TestValue3\",\"TestParameter2\":\"TestValue2\",\"TestParameter1\":\"TestValue1\"}}]";
+        String expectedResponseBody = "[{\"id\":1,\"title\":\"Test\",\"description\":\"Description from test 1\",\"category_name\":\"categoryAfterEdit\",\"price\":100,\"version\":2,\"miniature\":\"link1\",\"parameters\":{\"TestParameter3\":\"TestValue3\",\"TestParameter2\":\"TestValue2\",\"TestParameter1\":\"TestValue1\"}}]";
         Assert.assertEquals(expectedResponseBody,response.getBody().asString());
     }
     @Test
     @Order(15)
+    public void should_response_200_after_title_edit(){
+        EditRequest auctionRequest = new EditRequest();
+        auctionRequest.setTitle("Test");
+        auctionRequest.setVersion(1);
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .body(auctionRequest)
+                .contentType (ContentType.JSON)
+                .put("/api/auctions/1")
+                .then()
+                .statusCode (HttpStatus.OK.value ());
+    }
+    @Test
+    @Order(16)
     public void should_response_409_after_trying_to_edit_outdated_auction(){
         EditRequest auctionRequest = new EditRequest();
         auctionRequest.setTitle("Test");
-        auctionRequest.setVersion(321654);
+        auctionRequest.setVersion(0);
         var response = given()
                 .cookies(adminResponse.getCookies())
                 .body(auctionRequest)
@@ -247,7 +261,7 @@ public class AllTestsInOne {
                 .statusCode (HttpStatus.CONFLICT.value ());
     }
     @Test
-    @Order(16)
+    @Order(17)
     public void should_response_200_after_editing_existing_auction_parameters_and_adding_new_one(){
         List<PhotoRequest> photos = new ArrayList<>();
         List<ParameterRequest> parameters = new ArrayList<>();
@@ -256,14 +270,14 @@ public class AllTestsInOne {
         parameters.add(new ParameterRequest("newTestParameter1","3"));
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(new EditRequest("Title after edit", "Description after edit", 100, "testCategory", parameters, photos, 1))
+                .body(new EditRequest("Title after edit", "Description after edit", 100, "testCategory", parameters, photos, 2))
                 .contentType (ContentType.JSON)
                 .put("/api/auctions/1")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
     }
     @Test
-    @Order(17)
+    @Order(18)
     public void should_response_400_after_trying_to_create_auction_without_title(){
         AuctionRequest auctionRequest = new AuctionRequest();
         List<ParameterRequest> parameterRequestList = new ArrayList<>();
@@ -285,5 +299,16 @@ public class AllTestsInOne {
                 .post("/api/auctions")
                 .then()
                 .statusCode (HttpStatus.BAD_REQUEST.value ());
+    }
+    @Test
+    @Order(19)
+    public void auction_view_should_display_edited_auction_with_one_new_parameter(){
+        Response response = given()
+                .cookies(adminResponse.getCookies())
+                .contentType (ContentType.JSON)
+                .get("/api/auctions")
+                .andReturn();
+        String expectedResponseBody = "[{\"id\":1,\"title\":\"Title after edit\",\"description\":\"Description after edit\",\"category_name\":\"categoryAfterEdit\",\"price\":100,\"version\":3,\"miniature\":\"link1\",\"parameters\":{\"TestParameter3\":\"TestValue3\",\"TestParameter2\":\"afterTest2\",\"TestParameter1\":\"afterTest1\",\"newTestParameter1\":\"3\"}}]";
+        Assert.assertEquals(expectedResponseBody,response.getBody().asString());
     }
 }
