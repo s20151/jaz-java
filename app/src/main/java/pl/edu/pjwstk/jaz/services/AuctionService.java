@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import pl.edu.pjwstk.jaz.entities.*;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
+import pl.edu.pjwstk.jaz.requests.EditRequest;
 import pl.edu.pjwstk.jaz.requests.ParameterRequest;
 import pl.edu.pjwstk.jaz.requests.PhotoRequest;
 import pl.edu.pjwstk.jaz.user.User;
@@ -87,66 +88,64 @@ public class AuctionService {
             }
         }
     }
-    public void editAuction(Long id, AuctionRequest auctionRequest, HttpServletResponse response) {
+    public void editAuction(Long id, EditRequest auctionRequest, HttpServletResponse response) {
         UserEntity currentUser = findCurrentUser();
         AuctionEntity auctionFromDb = entityManager.find(AuctionEntity.class, id);
         if(auctionFromDb==null){
             response.setStatus(HttpStatus.NOT_FOUND.value());
         }else {
             if(currentUser.getId()==auctionFromDb.getUserEntity().getId() || currentUser.getAuthorities().contains("admin")) {
-                if(auctionRequest.getCategoryName() != null) {
-                    CategoryEntity category;
-                    if(!categoryService.findByName(auctionRequest.getCategoryName()).isEmpty()) {
-                        category =categoryService.findByName(auctionRequest.getCategoryName()).get(0);
-                        auctionFromDb.setCategoryEntity(category);
-                    }
-                }
-                if(auctionRequest.getTitle()!= null) {
-                    auctionFromDb.setTitle(auctionRequest.getTitle());
-                }
-                if (auctionRequest.getDescription()!=null) {
-                    auctionFromDb.setDescription(auctionRequest.getDescription());
-                }
-                if(auctionRequest.getPrice()>0) {
-                    auctionFromDb.setPrice(auctionRequest.getPrice());
-                }
-                try{
-                    List<ParameterRequest> parametersFromRequest = auctionRequest.getParameters();
-                    List<AuctionParameterEntity> allAuctionParameters = getAllAuctionParameters(auctionFromDb);
-                    for(ParameterRequest parameterRequest : parametersFromRequest){
-                        ParameterEntity parameter;
-                        if(doesParameterExist(parameterRequest)){
-                            parameter = getExistingParameter(parameterRequest);
-                            boolean auctionParameterEntityPresentInDB = false;
-                            for(AuctionParameterEntity entity : allAuctionParameters){
-                                if(entity.getId().getParameter_id() == parameter.getId()){
-                                    entity.setValue(parameterRequest.getParameterValue());
-                                    entityManager.merge(entity);
-                                    auctionParameterEntityPresentInDB=true;
-                                }
-                            }
-                            if(!auctionParameterEntityPresentInDB) {
-                                createAuctionParameter(auctionFromDb, parameterRequest, parameter);
-                            }
-                        }else {
-                            parameter = new ParameterEntity();
-                            parameter.setName(parameterRequest.getName());
-                            entityManager.persist(parameter);
-                            createAuctionParameter(auctionFromDb, parameterRequest, parameter);
+                if(auctionFromDb.getVersion() != auctionRequest.getVersion()) { //TODO
+                    response.setStatus(HttpStatus.CONFLICT.value());
+                }else {
+                    if(auctionRequest.getCategoryName() != null) {
+                        CategoryEntity category;
+                        if(!categoryService.findByName(auctionRequest.getCategoryName()).isEmpty()) {
+                            category = categoryService.findByName(auctionRequest.getCategoryName()).get(0);
+                            auctionFromDb.setCategoryEntity(category);
                         }
                     }
-                }catch(NullPointerException e){
-                    e.printStackTrace();
-                }
-                if(auctionRequest.getPhotos()!=null && !auctionRequest.getPhotos().isEmpty()){
-                    setAuctionPhotos(auctionRequest.getPhotos(),auctionFromDb);
-                }
-                if(auctionFromDb.getVersion() == entityManager.find(AuctionEntity.class, id).getVersion()) {
+                    if(auctionRequest.getTitle() != null) {
+                        auctionFromDb.setTitle(auctionRequest.getTitle());
+                    }
+                    if(auctionRequest.getDescription() != null) {
+                        auctionFromDb.setDescription(auctionRequest.getDescription());
+                    }
+                    if(auctionRequest.getPrice() > 0) {
+                        auctionFromDb.setPrice(auctionRequest.getPrice());
+                    }
+                    if(auctionRequest.getParameters() != null && !auctionRequest.getParameters().isEmpty()) {
+                        List<ParameterRequest> parametersFromRequest = auctionRequest.getParameters();
+                        List<AuctionParameterEntity> allAuctionParameters = getAllAuctionParameters(auctionFromDb);
+                        for(ParameterRequest parameterRequest : parametersFromRequest) {
+                            ParameterEntity parameter;
+                            if(doesParameterExist(parameterRequest)) {
+                                parameter = getExistingParameter(parameterRequest);
+                                boolean auctionParameterEntityPresentInDB = false;
+                                for(AuctionParameterEntity entity : allAuctionParameters) {
+                                    if(entity.getId().getParameter_id() == parameter.getId()) {
+                                        entity.setValue(parameterRequest.getParameterValue());
+                                        entityManager.merge(entity);
+                                        auctionParameterEntityPresentInDB = true;
+                                    }
+                                }
+                                if(!auctionParameterEntityPresentInDB) {
+                                    createAuctionParameter(auctionFromDb, parameterRequest, parameter);
+                                }
+                            }else {
+                                parameter = new ParameterEntity();
+                                parameter.setName(parameterRequest.getName());
+                                entityManager.persist(parameter);
+                                createAuctionParameter(auctionFromDb, parameterRequest, parameter);
+                            }
+                        }
+                    }
+                    if(auctionRequest.getPhotos() != null && !auctionRequest.getPhotos().isEmpty()) {
+                        setAuctionPhotos(auctionRequest.getPhotos(), auctionFromDb);
+                    }
                     auctionFromDb.setVersion(auctionFromDb.getVersion()+1);
                     entityManager.merge(auctionFromDb);
                     response.setStatus(HttpStatus.OK.value());
-                }else{
-                    response.setStatus(HttpStatus.CONFLICT.value());
                 }
             }else {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -243,6 +242,7 @@ public class AuctionService {
                 .setParameter ("name", parameterRequest.getName())
                 .getSingleResult ();
     }
+
     public UserEntity findCurrentUser(){
         return entityManager.createQuery ("SELECT ue FROM UserEntity ue WHERE ue.username= :username", UserEntity.class)
                 .setParameter ("username", getCurrentUsername())

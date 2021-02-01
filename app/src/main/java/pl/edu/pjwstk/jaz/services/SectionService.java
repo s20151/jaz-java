@@ -21,7 +21,7 @@ public class SectionService {
         if(findByName(sectionRequest.getName()).isEmpty()) {
             sectionEntity.setName(sectionRequest.getName());
             entityManager.persist(sectionEntity);
-            response.setStatus(HttpStatus.OK.value());
+            response.setStatus(HttpStatus.CREATED.value());
         }else{
             response.setStatus(HttpStatus.CONFLICT.value());
         }

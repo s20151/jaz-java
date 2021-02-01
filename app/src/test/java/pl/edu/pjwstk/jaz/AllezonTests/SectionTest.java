@@ -24,21 +24,21 @@ public class SectionTest {
     }
 
     @Test
-    public void should_response_200_after_creating_section(){
+    public void should_response_201_after_creating_section(){
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(new SectionRequest("newSectionFromTest223"))
+                .body(new SectionRequest("newSectionFromTest2"))
                 .contentType (ContentType.JSON)
                 .post("/api/section")
                 .then()
-                .statusCode (HttpStatus.OK.value ());
+                .statusCode (HttpStatus.CREATED.value ());
     }
 
     @Test
     public void should_response_200_after_editing_existing_section(){
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(new SectionRequest("sectionAfterEdit333"))
+                .body(new SectionRequest("sectionAfterEdit"))
                 .contentType (ContentType.JSON)
                 .put("/api/section/2")
                 .then()
@@ -54,6 +54,17 @@ public class SectionTest {
                 .put("/api/section/1234")
                 .then()
                 .statusCode (HttpStatus.NOT_FOUND.value ());
+    }
+
+    @Test
+    public void should_response_409_after_trying_to_add_already_existing_section(){
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .body(new SectionRequest("newSectionFromTest2"))
+                .contentType (ContentType.JSON)
+                .post("/api/section")
+                .then()
+                .statusCode (HttpStatus.CONFLICT.value ());
     }
 }
 

@@ -2,18 +2,28 @@ package pl.edu.pjwstk.jaz.AllezonTests;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringRunner;
+import pl.edu.pjwstk.jaz.IntegrationTest;
+import pl.edu.pjwstk.jaz.RestAssurePortListener;
+import pl.edu.pjwstk.jaz.entities.AuctionView;
 import pl.edu.pjwstk.jaz.login.LoginRequest;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
+import pl.edu.pjwstk.jaz.requests.EditRequest;
 import pl.edu.pjwstk.jaz.requests.ParameterRequest;
 import pl.edu.pjwstk.jaz.requests.PhotoRequest;
 import java.util.ArrayList;
 import java.util.List;
-
 import static io.restassured.RestAssured.given;
 
+@RunWith(SpringRunner.class)
+@IntegrationTest
 public class AuctionTest {
 
     private static Response adminResponse;
@@ -29,31 +39,24 @@ public class AuctionTest {
                 .thenReturn();
         userResponse = given()
                 .when()
-                .body (new LoginRequest ("user","user"))
+                .body (new LoginRequest ("user1","user1"))
                 .contentType (ContentType.JSON)
                 .post ("/api/login")
                 .thenReturn();
     }
     @Test
     public void should_response_201_after_creating_auction(){
-        AuctionRequest auction = new AuctionRequest();
         List<ParameterRequest> parameterRequestList = new ArrayList<>();
-        parameterRequestList.add(new ParameterRequest("Wysokosc","55555"));
-        parameterRequestList.add(new ParameterRequest("Dlugosc","666666"));
-        parameterRequestList.add(new ParameterRequest("Szerokosc","777777"));
+        parameterRequestList.add(new ParameterRequest("Wysokosc","54322"));
+        parameterRequestList.add(new ParameterRequest("Dlugosc","123"));
+        parameterRequestList.add(new ParameterRequest("Szerokosc","7123"));
         List<PhotoRequest> photoList = new ArrayList<>();
-        photoList.add(new PhotoRequest("link1FromTest123.pl"));
-        photoList.add(new PhotoRequest("link2FromTest123.pl"));
-        photoList.add(new PhotoRequest("link3FromTest123.pl"));
-        auction.setTitle("Auction from test333");
-        auction.setDescription("Description from test333");
-        auction.setPrice(2131);
-        auction.setCategoryName("PSU");
-        auction.setParameters(parameterRequestList);
-        auction.setPhotos(photoList);
+        photoList.add(new PhotoRequest("link1FromTest123.pl33333"));
+        photoList.add(new PhotoRequest("link2FromTest123.pl123123"));
+        photoList.add(new PhotoRequest("link3FromTest123.p23123l"));
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(auction)
+                .body(new AuctionRequest("Title from test 2", "Description from test 2", 22222, "1st Category", parameterRequestList, photoList ))
                 .contentType (ContentType.JSON)
                 .post("/api/auctions")
                 .then()
@@ -71,6 +74,7 @@ public class AuctionTest {
                 .then()
                 .statusCode (HttpStatus.BAD_REQUEST.value ());
     }
+
     @Test
     public void should_response_404_after_trying_to_edit_not_existing_auction(){
         var response = given()
@@ -83,14 +87,15 @@ public class AuctionTest {
     }
     @Test
     public void should_response_200_after_editing_existing_auction(){
-        AuctionRequest auctionRequest = new AuctionRequest();
+        EditRequest auctionRequest = new EditRequest();
         auctionRequest.setTitle("Title after edit");
         auctionRequest.setDescription("Description after edit");
+        auctionRequest.setVersion(5);
         var response = given()
                 .cookies(adminResponse.getCookies())
                 .body(auctionRequest)
                 .contentType (ContentType.JSON)
-                .put("/api/auctions/7")
+                .put("/api/auctions/4")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
     }
@@ -99,7 +104,7 @@ public class AuctionTest {
     public void should_response_401_after_trying_to_edit_other_user_existing_auction(){
         var response = given()
                 .cookies(userResponse.getCookies())
-                .body(new AuctionRequest())
+                .body(new EditRequest())
                 .contentType (ContentType.JSON)
                 .put("/api/auctions/4")
                 .then()
@@ -107,17 +112,38 @@ public class AuctionTest {
     }
     @Test
     public void should_response_200_after_editing_existing_auction_parameters_and_adding_new_one(){
-        AuctionRequest auctionRequest = new AuctionRequest();
+        EditRequest auctionRequest = new EditRequest();
         List<ParameterRequest> parameters = new ArrayList<>();
         parameters.add(new ParameterRequest("Wysokosc","afterTest1111"));
         parameters.add(new ParameterRequest("Dlugosc","afterTest22"));
-        parameters.add(new ParameterRequest("newTestParameter","3333afterTest"));
+        parameters.add(new ParameterRequest("newTestParameter333","3333afterTest"));
+        auctionRequest.setVersion(7);
         var response = given()
                 .cookies(adminResponse.getCookies())
                 .body(auctionRequest)
                 .contentType (ContentType.JSON)
-                .put("/api/auctions/7")
+                .put("/api/auctions/4")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
+    }
+    @Test
+    public void should_response_409_after_trying_to_edit_outdated_auction(){
+        EditRequest auctionRequest = new EditRequest();
+        auctionRequest.setTitle("Test");
+        auctionRequest.setVersion(555555);
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .body(auctionRequest)
+                .contentType (ContentType.JSON)
+                .put("/api/auctions/5")
+                .then()
+                .statusCode (HttpStatus.CONFLICT.value ());
+    }
+    public void auction_view_should_display_auction_with_parameters_and_minature(){
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .contentType (ContentType.JSON)
+                .get("/api/auctions/5")
+                .thenReturn();
     }
 }

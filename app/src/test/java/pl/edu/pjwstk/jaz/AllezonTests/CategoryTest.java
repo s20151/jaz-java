@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import pl.edu.pjwstk.jaz.login.LoginRequest;
 import pl.edu.pjwstk.jaz.requests.CategoryRequest;
+import pl.edu.pjwstk.jaz.requests.SectionRequest;
+
 import static io.restassured.RestAssured.given;
 
 public class CategoryTest {
@@ -24,14 +26,14 @@ public class CategoryTest {
     }
 
     @Test
-    public void should_response_200_after_creating_category_with_existing_section(){
+    public void should_response_201_after_creating_category_with_existing_section(){
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(new CategoryRequest("newCategoryFromTest2",1L))
+                .body(new CategoryRequest("newCategoryFromTest3",1L))
                 .contentType (ContentType.JSON)
                 .post("/api/category")
                 .then()
-                .statusCode (HttpStatus.OK.value ());
+                .statusCode (HttpStatus.CREATED.value ());
     }
 
     @Test
@@ -49,9 +51,9 @@ public class CategoryTest {
     public void should_response_200_after_editing_exisiting_category(){
         var response = given()
                 .cookies(adminResponse.getCookies())
-                .body(new CategoryRequest("newCategory123",2L))
+                .body(new CategoryRequest("categoryAfterEdit",2L))
                 .contentType (ContentType.JSON)
-                .put("/api/category/7")
+                .put("/api/category/3")
                 .then()
                 .statusCode (HttpStatus.OK.value ());
     }
@@ -65,5 +67,15 @@ public class CategoryTest {
                 .put("/api/category/1237")
                 .then()
                 .statusCode (HttpStatus.NOT_FOUND.value ());
+    }
+    @Test
+    public void should_response_409_after_trying_to_add_already_existing_category(){
+        var response = given()
+                .cookies(adminResponse.getCookies())
+                .body(new CategoryRequest("newCategoryFromTest3", 1L))
+                .contentType (ContentType.JSON)
+                .post("/api/category")
+                .then()
+                .statusCode (HttpStatus.CONFLICT.value ());
     }
 }

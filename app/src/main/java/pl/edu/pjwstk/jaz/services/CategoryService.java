@@ -26,7 +26,7 @@ public class CategoryService {
                 categoryEntity.setName(categoryRequest.getName());
                 categoryEntity.setSectionEntity(entityManager.find(SectionEntity.class, categoryRequest.getSection_id()));
                 entityManager.persist(categoryEntity);
-                response.setStatus(HttpStatus.OK.value());
+                response.setStatus(HttpStatus.CREATED.value());
             }else{
                 response.setStatus(HttpStatus.CONFLICT.value());
             }

@@ -1,10 +1,10 @@
 package pl.edu.pjwstk.jaz.controllers;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjwstk.jaz.entities.AuctionView;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
+import pl.edu.pjwstk.jaz.requests.EditRequest;
 import pl.edu.pjwstk.jaz.services.AuctionService;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -28,7 +28,7 @@ public class AuctionController {
 
     @PutMapping("/auctions/{auctionId}")
     @Transactional
-    public void editAuction(@PathVariable("auctionId") Long auctionId, @RequestBody @Validated AuctionRequest auctionRequest, HttpServletResponse response){
+    public void editAuction(@PathVariable("auctionId") Long auctionId, @RequestBody @Validated EditRequest auctionRequest, HttpServletResponse response){
         auctionService.editAuction(auctionId,auctionRequest, response);
     }
 
