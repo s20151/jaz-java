@@ -2,6 +2,7 @@ package pl.edu.pjwstk.jaz.services;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import pl.edu.pjwstk.jaz.entities.CategoryEntity;
 import pl.edu.pjwstk.jaz.entities.SectionEntity;
 import pl.edu.pjwstk.jaz.requests.CategoryRequest;
@@ -9,7 +10,7 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Repository
+@Service
 public class CategoryService {
     private final EntityManager entityManager;
     private final SectionService sectionService;

@@ -2,13 +2,14 @@ package pl.edu.pjwstk.jaz.services;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import pl.edu.pjwstk.jaz.entities.SectionEntity;
 import pl.edu.pjwstk.jaz.requests.SectionRequest;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Repository
+@Service
 public class SectionService {
     private final EntityManager entityManager;
 

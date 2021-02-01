@@ -3,6 +3,7 @@ package pl.edu.pjwstk.jaz.services;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import pl.edu.pjwstk.jaz.entities.*;
 import pl.edu.pjwstk.jaz.requests.AuctionRequest;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Repository
+@Service
 public class AuctionService {
 
     private final EntityManager entityManager;
@@ -95,7 +96,7 @@ public class AuctionService {
             response.setStatus(HttpStatus.NOT_FOUND.value());
         }else {
             if(currentUser.getId()==auctionFromDb.getUserEntity().getId() || currentUser.getAuthorities().contains("admin")) {
-                if(auctionFromDb.getVersion() != auctionRequest.getVersion()) { //TODO
+                if(auctionFromDb.getVersion() != auctionRequest.getVersion()) {
                     response.setStatus(HttpStatus.CONFLICT.value());
                 }else {
                     if(auctionRequest.getCategoryName() != null) {
