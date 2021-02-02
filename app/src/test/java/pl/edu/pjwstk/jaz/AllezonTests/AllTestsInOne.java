@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import static io.restassured.RestAssured.given;
 
 @RunWith(SpringRunner.class)
 @IntegrationTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AllTestsInOne {
     private static Response adminResponse;
     private static Response userResponse;
@@ -206,7 +208,7 @@ public class AllTestsInOne {
                 .cookies(adminResponse.getCookies())
                 .body(new EditRequest())
                 .contentType (ContentType.JSON)
-                .put("/api/auctions/999999999999999999")
+                .put("/api/auctions/99999999")
                 .then()
                 .statusCode (HttpStatus.NOT_FOUND.value ());
     }
